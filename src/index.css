@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.Active {
+  color: #1967d2;
+  padding: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #e8f0fe;
+  border: #1967d2 solid 2px;
+  border-radius:  20px;
+  font-size: 15px;
+}
+
+.Failed {
+  color: red;
+  padding: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: pink;
+  border: red solid 2px;
+  border-radius:  20px;
+  font-size: 15px;
+}
+
+.Successful {
+  color: #388e3c;
+  padding: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #c3e6cc;
+  border: #388e3c solid 2px;
+  border-radius:  20px;
+  font-size: 15px;
+}
+
+.project-tile {
+  width: 33.33%;
+}
+
+.inp {
+  width: 60px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 3px solid;
+}
+
+#fund-btn {
+  background-color: #388e3c;
+  color: white;
+  border: none;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.close {
+  font-size: 30px;
+}
+
+.close:hover {
+  cursor: pointer;
+}
+
+.modal_content {
+  background-color: white;
+  padding: 30px;
+  width: 50%;
+  margin-top: 10%;
+}
+
+.account {
+  color: #1a73e8;
+  line-height: 2.3;
+  margin-left: 20px;
+}
+
+.account:hover {
+  cursor: pointer;
+}
+
+button:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.start {
+  background-color: #f7f7f7;
+  width: 35%;
+  height:40px
+}
+
+.start:hover {
+  background-color: #f0f0f0;
+}
+
+/*  Toast CSS */
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  width: 350px; /* Set a default minimum width */
+  /*margin-left: -125px;*/
+   /* Divide value of min-width by 2 */
+  background-color: #333; /* Black background color */
+  color: #fff; /* White text color */
+  /*text-align: center;*/
+   /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  right: 10px; /* Center the snackbar */
+  top: 60px; /* 60px from the bottom */
+  border-radius: 10px;
+  font-size: 18px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 60px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 60px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {top: 60px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {top: 60px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
