@@ -1,4 +1,4 @@
-export const ADDRESS = "0xeb769e6B4414c2C42cacbc489778334f8c3fa978";
+export const ADDRESS = "0x901640EE7b44e8F1C902147e9Bee00A3CeaA10FE";
 
 export const ABI = [
 	{
@@ -16,7 +16,7 @@ export const ABI = [
 				"type": "address"
 			},
 			{
-				"name": "name",
+				"name": "title",
 				"type": "string"
 			},
 			{
@@ -94,7 +94,7 @@ export const ABI = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_name",
+				"name": "_title",
 				"type": "string"
 			},
 			{
@@ -117,25 +117,6 @@ export const ABI = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_pid",
-				"type": "uint256"
-			}
-		],
-		"name": "getContribution",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -148,5 +129,32 @@ export const ABI = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "_pid",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_title",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "_amt",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "by",
+				"type": "address"
+			}
+		],
+		"name": "contribution",
+		"type": "event"
 	}
 ];

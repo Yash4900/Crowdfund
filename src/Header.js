@@ -4,6 +4,7 @@ import MyProjects from './MyProjects.js';
 import Home from './Home.js';
 import StartProject from './StartProject.js';
 import { useState } from 'react';
+import image from './account.png';
 
 function Header(props) {
 
@@ -29,7 +30,7 @@ function Header(props) {
 		<>
 			<Router>
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
-					<Link to="/" style={{ textDecoration: "none", color: "black", fontSize: "25px", marginLeft: "60px" }}><b>Crowdfund</b><b style={{ color: "red" }}>.</b></Link>
+					<Link to="/" style={{ textDecoration: "none", color: "black", fontSize: "25px", marginLeft: "60px" }}>Crowd<b>fund</b><b style={{ color: "red" }}>.</b></Link>
 					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
 					</button>
@@ -64,6 +65,9 @@ function Header(props) {
 			<div className="modal">
 				<div className="modal_content mx-auto">
 					<div style={{ display: "flex", flexDirection: "row-reverse" }}><span className="close" onClick={closePopup}>&times;</span></div>
+					<div style={{ display: "flex", justifyContent: "center" }}>
+						<img src={image} width="40%" />
+					</div>
 					<div style={{ textAlign: "center", marginTop: "40px" }}>
 						<span style={{ margin: "auto", color: "grey" }}>Account </span>
 						<span style={{ textTransform: "uppercase", color: "#1e88e5" }}>{props.network} TEST NETWORK</span>

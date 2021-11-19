@@ -14,11 +14,11 @@ class StartProject extends Component {
 	async createNewProject(title, desc, mins, goal) {
 		const web3 = new Web3("http://localhost:7545");
 		const contract = new web3.eth.Contract(ABI, ADDRESS);
-		contract.methods.createProject(title, desc, mins, goal).send({ from: this.props.account, gas: 200000 })
+		contract.methods.createProject(title, desc, mins, web3.utils.toWei(goal, "ether")).send({ from: this.props.account, gas: 200000 })
 			.then((res) => {
-
+				this.showToast("Project created successfully!", "success");
 			}).catch((err) => {
-
+				this.showToast("Something went wrong", "error");
 			});
 	}
 
@@ -27,11 +27,16 @@ class StartProject extends Component {
 		this.createNewProject(this.state.title, this.state.desc, this.state.mins, this.state.goal);
 	}
 
-	showToast(message) {
-		// Get the snackbar DIV
+	showToast(message, type) {
 		var x = document.getElementById("snackbar");
-		x.innerHTML = message;
-		// Add the "show" class to DIV
+		document.querySelector("#snackbar #message").innerHTML = message;
+		if (type === "success") {
+			document.querySelector("#snackbar #title #bold").innerHTML = "Success!";
+			x.style.backgroundColor = "#9df2a3";
+		} else {
+			document.querySelector("#snackbar #title #bold").innerHTML = "Oops!";
+			x.style.backgroundColor = "#fab1af";
+		}
 		x.className = "show";
 		// After 3 seconds, remove the show class from DIV
 		setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
@@ -60,7 +65,7 @@ class StartProject extends Component {
 									<div className="col-md-6 row">
 										<label for="goal" className="col-md-3 col-form-label">Goal</label>
 										<div className="col-md-9">
-											<input type="number" className="form-control" onChange={(e) => this.setState({ goal: e.target.value })} id="goal" placeholder="Goal amount in ETH" />
+											<input type="number" step="0.1" className="form-control" onChange={(e) => this.setState({ goal: e.target.value })} id="goal" placeholder="Goal amount in ETH" />
 										</div>
 									</div>
 									<div className="col-md-6 row">

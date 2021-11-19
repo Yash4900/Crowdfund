@@ -74,6 +74,7 @@ code {
 
 .close {
   font-size: 30px;
+  line-height: 0.5;
 }
 
 .close:hover {
@@ -83,8 +84,8 @@ code {
 .modal_content {
   background-color: white;
   padding: 30px;
-  width: 50%;
-  margin-top: 10%;
+  width: 40%;
+  margin-top: 5%;
 }
 
 .account {
@@ -109,10 +110,6 @@ button:disabled {
   height:40px
 }
 
-.start:hover {
-  background-color: #f0f0f0;
-}
-
 /*  Toast CSS */
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
@@ -121,7 +118,7 @@ button:disabled {
   /*margin-left: -125px;*/
    /* Divide value of min-width by 2 */
   background-color: #333; /* Black background color */
-  color: #fff; /* White text color */
+  color: black; /* White text color */
   /*text-align: center;*/
    /* Centered text */
   border-radius: 2px; /* Rounded borders */
