@@ -8,7 +8,7 @@ class Account extends Component {
 	}
 
 	async loadAccountInfo() {
-		const web3 = new Web3("http://localhost:7545");
+		const web3 = new Web3(window.ethereum);
 		const accounts = await web3.eth.getAccounts();
 		const net = await web3.eth.net.getNetworkType();
 		var bal = await web3.eth.getBalance(accounts[0]);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import image from './start.svg';
-import { ABI, ADDRESS } from './config.js';
+import image from '../images/start.svg';
+import { ABI, ADDRESS } from '../config.js';
 import Web3 from 'web3';
 
 class StartProject extends Component {
@@ -12,7 +12,7 @@ class StartProject extends Component {
 	}
 
 	async createNewProject(title, desc, mins, goal) {
-		const web3 = new Web3("http://localhost:7545");
+		const web3 = new Web3(window.ethereum);
 		const contract = new web3.eth.Contract(ABI, ADDRESS);
 		contract.methods.createProject(title, desc, mins, web3.utils.toWei(goal, "ether")).send({ from: this.props.account, gas: 200000 })
 			.then((res) => {

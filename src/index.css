@@ -106,9 +106,20 @@ button:disabled {
 
 .start {
   background-color: #f7f7f7;
+  margin-top: 50px;
   width: 35%;
-  height:40px
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px 
 }
+
+.start:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
 
 /*  Toast CSS */
 /* The snackbar - position it at the bottom and in the middle of the screen */

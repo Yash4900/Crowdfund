@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { ABI, ADDRESS } from './config.js';
+import { ABI, ADDRESS } from '../config.js';
 import Web3 from 'web3';
 
 class MyProjects extends Component {
 
 	constructor(props) {
 		super(props);
-		var web3 = new Web3("http://localhost:7545");
+		var web3 = new Web3(window.ethereum);
 		var contract = new web3.eth.Contract(ABI, ADDRESS);
 		this.state = { projectCount: 0, contributions: [], projects: [], account: '', time: 0, web3: web3, contract: contract, index: 0, value: 0 };
 	}
@@ -53,7 +53,7 @@ class MyProjects extends Component {
 								desc: res.description,
 								goal: res.goalAmount / Math.pow(10, 18),
 								gathered: res.gatheredAmount / Math.pow(10, 18),
-								status: this.findStatus(res.goalAmount, res.gatheredAmount, res.deadline)
+								status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
 							}]
 						});
 					}
@@ -80,6 +80,14 @@ class MyProjects extends Component {
 	claimFund(id) {
 		this.state.contract.methods.claimFunds(id).send({ from: this.props.account }).then((res) => {
 			this.showToast("Funds claimed successfully!", "success");
+		}).catch((err) => {
+			this.showToast(err, "error");
+		});
+	}
+
+	getRefund(id) {
+		this.state.contract.methods.getRefund(id).send({ from: this.props.account }).then((res) => {
+			this.showToast("Refund received successfully!", "success");
 		}).catch((err) => {
 			this.showToast(err, "error");
 		});
@@ -148,6 +156,7 @@ class MyProjects extends Component {
 								<th scope="col">Project ID</th>
 								<th scope="col">Project Title</th>
 								<th scope="col">Ethers</th>
+								<th scope="col"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -159,6 +168,11 @@ class MyProjects extends Component {
 											<th scope="row">{contribution.id}</th>
 											<td>{contribution.projectTitle}</td>
 											<td>{contribution.amt}</td>
+											<td>
+												<button className="btn btn-dark btn-sm" onClick={(e) => this.getRefund(index + 1)}>
+													REFUND
+												</button>
+											</td>
 										</tr>
 
 									);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import image from './home.svg';
+import image from '../images/home.svg';
 
 class Home extends Component {
 
@@ -11,7 +11,7 @@ class Home extends Component {
 					<div className="col-md-1"></div>
 					<div className="col-md-5">
 						<p style={{ fontSize: "50px", lineHeight: "1", marginTop: "100px" }}><b>Need funds for your project?</b></p>
-						<div className="start" style={{ marginTop: "50px", backgroundColor: "#f7f7f7", width: "35%", height: "50px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "5px" }}>
+						<div className="start">
 							<Link to='/start-project' style={{ textDecoration: "none", color: "gray", fontSize: "20px" }}><span style={{ fontSize: "25px" }}>+</span> Start a project</Link>
 						</div>
 						<div style={{ marginTop: "50px" }}>

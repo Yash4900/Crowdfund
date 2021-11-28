@@ -4,7 +4,7 @@ import MyProjects from './MyProjects.js';
 import Home from './Home.js';
 import StartProject from './StartProject.js';
 import { useState } from 'react';
-import image from './account.png';
+import image from '../images/account.png';
 
 function Header(props) {
 

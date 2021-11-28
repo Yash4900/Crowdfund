@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { ABI, ADDRESS } from './config.js';
+import { ABI, ADDRESS } from '../config.js';
 import Web3 from 'web3';
 
 class Projects extends Component {
 
 	constructor(props) {
 		super(props);
-		var web3 = new Web3("http://localhost:7545");
+		var web3 = new Web3(window.ethereum);
 		var contract = new web3.eth.Contract(ABI, ADDRESS);
 		this.state = { projectCount: 0, projects: [], account: '', time: 0, web3: web3, contract: contract, index: 0, value: 0 };
 	}
@@ -44,6 +44,7 @@ class Projects extends Component {
 				if (err) {
 					console.log(err);
 				} else {
+					console.log(res);
 					this.setState({
 						projects: [...this.state.projects,
 						{
@@ -53,7 +54,7 @@ class Projects extends Component {
 							goal: res.goalAmount / Math.pow(10, 18),
 							gathered: res.gatheredAmount / Math.pow(10, 18),
 							deadline: this.getDeadline(res.deadline),
-							status: this.findStatus(res.goalAmount, res.gatheredAmount, res.deadline)
+							status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
 						}]
 					});
 				}
@@ -75,14 +76,6 @@ class Projects extends Component {
 					this.showToast(err, "error");
 				});
 		}
-	}
-
-	getRefund(id) {
-		this.state.contract.methods.getRefund(id).send({ from: this.props.account }).then((res) => {
-			this.showToast("Refund received successfully!", "success");
-		}).catch((err) => {
-			this.showToast(err, "error");
-		});
 	}
 
 	getDeadline(epoch) {
@@ -112,13 +105,6 @@ class Projects extends Component {
 	}
 
 	render() {
-		if (this.state.projectCount === 0) {
-			return (
-				<div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
-					<p>No Projects!</p>
-				</div>
-			);
-		}
 		return (
 
 			<div className="container">
@@ -153,16 +139,7 @@ class Projects extends Component {
 												<button id="fund-btn" disabled={project.status !== "Active"} onClick={() => this.contribute(index)}>FUND</button>
 											</div>
 										</div>
-										<div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
-											{
-												project.status === "Failed" ?
-													<button className="btn btn-dark btn-sm" onClick={(e) => this.getRefund(index + 1)}>
-														GET REFUND
-													</button>
-													:
-													<div></div>
-											}
-										</div>
+
 									</div>
 								</div>
 							);

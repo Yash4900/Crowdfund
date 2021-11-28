@@ -58,12 +58,14 @@ contract Crowdfund {
         msg.sender.transfer(projects[_pid].gatheredAmount);
         projects[_pid].fundsClaimed = true;
     }
-    
+
     // Function to get refund if project is not successful
     function getRefund (
         uint _pid
     ) public {
-        require(projects[_pid].contributions[msg.sender] > 0, "You have not contributed to this project OR You have already received the refund");
+        require(projects[_pid].deadline < now, "This project is still active");
+        require(projects[_pid].goalAmount > projects[_pid].gatheredAmount, "Project was successful! Money cannot be refunded");
+        require(projects[_pid].contributions[msg.sender] > 0, "You have already received the refund");
         msg.sender.transfer(projects[_pid].contributions[msg.sender]);
         projects[_pid].contributions[msg.sender] = 0;
     }
