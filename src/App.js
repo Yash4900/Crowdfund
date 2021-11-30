@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/Header.js';
 import Web3 from 'web3';
 import { ABI, ADDRESS } from './config.js';
+import image from './images/loading.png';
 
 class App extends Component {
 
@@ -12,13 +13,13 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { metamaskEnabled: true, web3: undefined, account: '', contract: undefined, network: '' }
+    this.state = { metamaskEnabled: false, web3: undefined, account: '', contract: undefined, network: '' }
   }
 
   async initialize() {
     if (window.ethereum) {
       try {
-        window.ethereum.enable();
+        await window.ethereum.enable();
         const web3 = new Web3(window.ethereum);
         const accounts = await web3.eth.getAccounts();
         const net = await web3.eth.net.getNetworkType();
@@ -42,8 +43,13 @@ class App extends Component {
       );
     } else {
       return (
-        <div style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}>
-          <div><p>Metamask not connected!</p></div>
+        <div>
+          <div style={{marginTop: "10%", width:"100%", display: "flex", justifyContent: "center"}}>
+            <img src={image} width="10%"/>
+          </div>
+          <div style={{width:"100%", display: "flex", justifyContent: "center", marginTop: "30px"}}>
+            <p>Connecting with Metamask ...</p>
+          </div>
         </div>
       );
     }
