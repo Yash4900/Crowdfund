@@ -29,7 +29,7 @@ function Header(props) {
 	return (
 		<>
 			<Router>
-				<nav className="navbar navbar-expand-lg navbar-light bg-light">
+				<nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor:"white"}}>
 					<Link to="/" style={{ textDecoration: "none", color: "black", fontSize: "25px", marginLeft: "60px" }}>Crowd<b>fund</b><b style={{ color: "red" }}>.</b></Link>
 					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>

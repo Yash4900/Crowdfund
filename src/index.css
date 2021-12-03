@@ -4,6 +4,7 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f9f5ff;
 }
 
 code {
@@ -53,16 +54,21 @@ code {
   background-color: transparent;
   border: none;
   outline: none;
-  border-bottom: 3px solid;
+  border-color: gray;
+  border-bottom: 2px solid #d0d0d0;
 }
 
 #fund-btn {
-  background-color: #388e3c;
+  background-color: #786694;
   color: white;
   border: none;
   padding-right: 10px;
   padding-left: 10px;
   border-radius: 5px;
+}
+
+#fund-btn:hover {
+  cursor: pointer;
 }
 
 .modal {
@@ -105,18 +111,18 @@ button:disabled {
 }
 
 .start {
-  background-color: #f7f7f7;
+  background-color: white;
   margin-top: 50px;
-  width: 35%;
+  width: 45%;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px 
+  border-radius: 10px;
+
 }
 
 .start:hover {
-  background-color: #f0f0f0;
   cursor: pointer;
 }
 

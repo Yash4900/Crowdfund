@@ -1,4 +1,4 @@
-export const ADDRESS = "0x09f4F10d062208cb636320Ef39b80E85BE0A61e4";
+export const ADDRESS = "0xA8A953a41178a9DE71fFe79a806bd95a5AD0bC03";
 
 export const ABI = [
 	{
@@ -102,7 +102,7 @@ export const ABI = [
 				"type": "string"
 			},
 			{
-				"name": "_mins",
+				"name": "_no_of_days",
 				"type": "uint256"
 			},
 			{

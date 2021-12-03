@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ABI, ADDRESS } from '../config.js';
 import Web3 from 'web3';
+import Loading from './Loading.js';
 
 class Projects extends Component {
 
@@ -8,7 +9,7 @@ class Projects extends Component {
 		super(props);
 		var web3 = new Web3(window.ethereum);
 		var contract = new web3.eth.Contract(ABI, ADDRESS);
-		this.state = { projectCount: 0, projects: [], account: '', time: 0, web3: web3, contract: contract, index: 0, value: 0 };
+		this.state = { loading:false, projectCount: 0, projects: [], account: '', time: 0, web3: web3, contract: contract, index: 0, value: 0 };
 	}
 
 	componentWillMount() {
@@ -26,7 +27,7 @@ class Projects extends Component {
 	}
 
 	async getProjects() {
-
+		this.setState({loading: true});
 		var seconds = new Date().getTime() / 1000;
 		this.setState({ time: seconds });
 
@@ -46,48 +47,52 @@ class Projects extends Component {
 				} else {
 					console.log(res);
 					this.setState({
-						projects: [...this.state.projects,
+						projects: [
 						{
+							id: i,
 							owner: res.owner,
 							title: res.title,
 							desc: res.description,
 							goal: res.goalAmount / Math.pow(10, 18),
 							gathered: res.gatheredAmount / Math.pow(10, 18),
-							deadline: this.getDeadline(res.deadline),
 							status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
-						}]
+						}, ...this.state.projects]
 					});
 				}
 			});
 		}
+		this.setState({loading:false});
 	}
 
-	contribute(id) {
+	contribute(id, index) {
+		this.setState({loading:true});
 		if (this.state.index === id && this.state.value > 0) {
-			this.state.contract.methods.contribute(id + 1, this.state.web3.utils.toWei(this.state.value, "ether")).send({ from: this.props.account, value: this.state.web3.utils.toWei(this.state.value, "ether") })
+			this.state.contract.methods.contribute(id, this.state.web3.utils.toWei(this.state.value, "ether")).send({ from: this.props.account, value: this.state.web3.utils.toWei(this.state.value, "ether") })
 				.then((res) => {
 					let projects = [...this.state.projects];
-					let project = { ...projects[id] };
+					let project = { ...projects[index] };
 					project.gathered = parseFloat(project.gathered) + parseFloat(this.state.value);
-					projects[id] = project;
+					projects[index] = project;
 					this.setState({ projects });
+					this.setState({loading:false});
 					this.showToast("You have successfully contributed for the project!", "success");
 				}).catch((err) => {
+					this.setState({loading:false});
 					this.showToast(err, "error");
 				});
 		}
 	}
 
-	getDeadline(epoch) {
-		var date = new Date(epoch * 1000);
-		var year = date.getFullYear();
-		var month = date.getMonth() + 1;
-		var day = date.getDate();
-		var hours = date.getHours();
-		var minutes = date.getMinutes();
-		var seconds = date.getSeconds();
-		return (day + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds);
-	}
+	// getDeadline(epoch) {
+	// 	var date = new Date(epoch * 1000);
+	// 	var year = date.getFullYear();
+	// 	var month = date.getMonth() + 1;
+	// 	var day = date.getDate();
+	// 	var hours = date.getHours();
+	// 	var minutes = date.getMinutes();
+	// 	var seconds = date.getSeconds();
+	// 	return (day + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds);
+	// }
 
 	showToast(message, type) {
 		var x = document.getElementById("snackbar");
@@ -105,6 +110,9 @@ class Projects extends Component {
 	}
 
 	render() {
+		if(this.state.loading) {
+			return (<Loading></Loading>);
+		}
 		return (
 
 			<div className="container">
@@ -114,10 +122,10 @@ class Projects extends Component {
 						this.state.projects.map((project, index) => {
 							return (
 								<div className="project-tile">
-									<div style={{ margin: "20px", padding: "15px" }} className="bg-light rounded-lg">
+									<div style={{ margin: "20px", padding: "15px", backgroundColor: "white", borderRadius:"10px" }} className="rounded-lg shadow-sm">
 										<p style={{ fontSize: "20px" }}><b>{project.title}</b> <span className={project.status} >{project.status}</span></p>
-										<p>{project.desc}</p>
-										<div style={{ margin: "2px", backgroundColor: "white", display: "flex" }}>
+										<p className="text-muted">{project.desc}</p>
+										<div className="bg-light" style={{ margin: "2px", display: "flex" }}>
 											<div style={{ textAlign: "center", width: "50%" }}>
 												<p style={{ margin: "5px" }}>Goal</p>
 												<p style={{ margin: "5px" }}><b>{project.goal}</b> ETH</p>
@@ -127,16 +135,15 @@ class Projects extends Component {
 												<p style={{ margin: "5px" }}><b>{project.gathered}</b> ETH</p>
 											</div>
 										</div>
-										<p style={{ marginTop: "10px" }}><b>Deadline: </b>{project.deadline}</p>
 										<div style={{ display: "flex", justifyContent: "flex-start", margin: "20px" }}>
 											<div >
 												<input className="inp" type="number" step="0.1" onChange={(e) => {
-													this.setState({ index: index, value: e.target.value });
+													this.setState({ index: project.id, value: e.target.value });
 												}} />
 											</div>
 											<div style={{ marginLeft: "15px" }}></div>
 											<div>
-												<button id="fund-btn" disabled={project.status !== "Active"} onClick={() => this.contribute(index)}>FUND</button>
+												<button id="fund-btn" disabled={project.status !== "Active"} onClick={() => this.contribute(project.id, index)}>FUND</button>
 											</div>
 										</div>
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ABI, ADDRESS } from '../config.js';
 import Web3 from 'web3';
+import Loading from './Loading.js';
 
 class MyProjects extends Component {
 
@@ -8,7 +9,7 @@ class MyProjects extends Component {
 		super(props);
 		var web3 = new Web3(window.ethereum);
 		var contract = new web3.eth.Contract(ABI, ADDRESS);
-		this.state = { projectCount: 0, contributions: [], projects: [], account: '', time: 0, web3: web3, contract: contract, index: 0, value: 0 };
+		this.state = { loading:false, projectCount: 0, contributions: [], projects: [], account: props.account, time: 0, web3: web3, contract: contract, index: 0, value: 0 };
 	}
 
 	componentWillMount() {
@@ -26,7 +27,7 @@ class MyProjects extends Component {
 	}
 
 	async getProjects() {
-
+		this.setState({loading:true});
 		var seconds = new Date().getTime() / 1000;
 		this.setState({ time: seconds });
 
@@ -46,23 +47,26 @@ class MyProjects extends Component {
 				} else {
 					if (this.props.account === res.owner) {
 						this.setState({
-							projects: [...this.state.projects,
+							projects: [
 							{
+								id: i,
 								owner: res.owner,
 								title: res.title,
 								desc: res.description,
 								goal: res.goalAmount / Math.pow(10, 18),
 								gathered: res.gatheredAmount / Math.pow(10, 18),
+								claimed: res.fundsClaimed,
 								status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
-							}]
+							}, ...this.state.projects]
 						});
 					}
 				}
 			});
 		}
 
-		this.state.contract.getPastEvents('contribution', { fromBlock: 0, toBlock: 'latest', filter: { by: this.state.account } }).then((events) => {
+		this.state.contract.getPastEvents('contribution', { fromBlock: 0, toBlock: 'latest' }).then((events) => {
 			for (let i = 0; i < events.length; i++) {
+				if(events[i].returnValues.by === this.state.account) {
 				this.setState({
 					contributions: [...this.state.contributions,
 					{
@@ -71,25 +75,36 @@ class MyProjects extends Component {
 						amt: events[i].returnValues._amt / Math.pow(10, 18)
 					}]
 				});
-			}
+			}}
 		});
 
-
+		this.setState({loading: false});
 	}
 
-	claimFund(id) {
+	claimFund(id, claimed) {
+		if(claimed) {
+			this.showToast("Funds have been claimed already!", "error");
+		} else{
+		this.setState({loading: true});
 		this.state.contract.methods.claimFunds(id).send({ from: this.props.account }).then((res) => {
+			this.setState({loading: false});
 			this.showToast("Funds claimed successfully!", "success");
 		}).catch((err) => {
+			this.setState({loading: false});
 			this.showToast(err, "error");
 		});
+	}
 	}
 
 	getRefund(id) {
-		this.state.contract.methods.getRefund(id).send({ from: this.props.account }).then((res) => {
+		this.setState({loading: true});
+		this.state.contract.methods.getRefund(id).send({ from: this.props.account, gas:200000 }).then((res) => {
+			this.setState({loading: false});
 			this.showToast("Refund received successfully!", "success");
 		}).catch((err) => {
+			this.setState({loading: false});
 			this.showToast(err, "error");
+			console.log(err);
 		});
 	}
 
@@ -109,6 +124,9 @@ class MyProjects extends Component {
 	}
 
 	render() {
+		if(this.state.loading) {
+			return (<Loading></Loading>);
+		}
 		return (
 			<div className="row mt-3">
 				<div className="col-md-9" >
@@ -118,10 +136,10 @@ class MyProjects extends Component {
 							this.state.projects.map((project, index) => {
 								return (
 									<div className="project-tile">
-										<div style={{ margin: "20px", padding: "15px" }} className="bg-light rounded-lg">
+										<div style={{ margin: "20px", padding: "15px", backgroundColor:"white", borderRadius:"10px" }} className="rounded-lg">
 											<p style={{ fontSize: "20px" }}><b>{project.title}</b> <span className={project.status} >{project.status}</span></p>
-											<p>{project.desc}</p>
-											<div style={{ margin: "5px", backgroundColor: "white", display: "flex" }}>
+											<p className="text-muted">{project.desc}</p>
+											<div className="bg-light" style={{ margin: "5px", display: "flex" }}>
 												<div style={{ textAlign: "center", width: "50%" }}>
 													<p style={{ margin: "5px" }}>Goal</p>
 													<p style={{ margin: "5px" }}><b>{project.goal}</b> ETH</p>
@@ -134,7 +152,7 @@ class MyProjects extends Component {
 											<div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
 												{
 													project.status === "Successful" ?
-														<button className="btn btn-dark btn-sm" onClick={(e) => this.claimFund(index + 1)}>
+														<button disabled={this.state.loading} className="btn btn-dark btn-sm" onClick={(e) => this.claimFund(project.id, project.claimed)}>
 															CLAIM FUNDS
 														</button>
 														:
@@ -150,7 +168,7 @@ class MyProjects extends Component {
 				</div>
 				<div className="col-md-3">
 					<p style={{ fontSize: "25px" }}><b>Your Contributions</b></p>
-					<table class="table table-striped">
+					<table className="table table-striped">
 						<thead>
 							<tr>
 								<th scope="col">Project ID</th>
@@ -169,7 +187,7 @@ class MyProjects extends Component {
 											<td>{contribution.projectTitle}</td>
 											<td>{contribution.amt}</td>
 											<td>
-												<button className="btn btn-dark btn-sm" onClick={(e) => this.getRefund(index + 1)}>
+												<button disabled={this.state.loading} className="btn btn-dark btn-sm" onClick={(e) => this.getRefund(contribution.id)}>
 													REFUND
 												</button>
 											</td>

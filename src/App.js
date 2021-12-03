@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Header from './components/Header.js';
+import Loading from './components/Loading.js';
 import Web3 from 'web3';
 import { ABI, ADDRESS } from './config.js';
 import image from './images/loading.png';
@@ -43,14 +44,7 @@ class App extends Component {
       );
     } else {
       return (
-        <div>
-          <div style={{marginTop: "10%", width:"100%", display: "flex", justifyContent: "center"}}>
-            <img src={image} width="10%"/>
-          </div>
-          <div style={{width:"100%", display: "flex", justifyContent: "center", marginTop: "30px"}}>
-            <p>Connecting with Metamask ...</p>
-          </div>
-        </div>
+        <Loading></Loading>
       );
     }
   }
