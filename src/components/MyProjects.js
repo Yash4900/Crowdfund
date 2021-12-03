@@ -9,7 +9,7 @@ class MyProjects extends Component {
 		super(props);
 		var web3 = new Web3(window.ethereum);
 		var contract = new web3.eth.Contract(ABI, ADDRESS);
-		this.state = { loading:false, projectCount: 0, contributions: [], projects: [], account: props.account, time: 0, web3: web3, contract: contract, index: 0, value: 0 };
+		this.state = { loading: false, projectCount: 0, contributions: [], projects: [], account: props.account, time: 0, web3: web3, contract: contract, index: 0, value: 0 };
 	}
 
 	componentWillMount() {
@@ -27,7 +27,7 @@ class MyProjects extends Component {
 	}
 
 	async getProjects() {
-		this.setState({loading:true});
+		this.setState({ loading: true });
 		var seconds = new Date().getTime() / 1000;
 		this.setState({ time: seconds });
 
@@ -48,16 +48,16 @@ class MyProjects extends Component {
 					if (this.props.account === res.owner) {
 						this.setState({
 							projects: [
-							{
-								id: i,
-								owner: res.owner,
-								title: res.title,
-								desc: res.description,
-								goal: res.goalAmount / Math.pow(10, 18),
-								gathered: res.gatheredAmount / Math.pow(10, 18),
-								claimed: res.fundsClaimed,
-								status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
-							}, ...this.state.projects]
+								{
+									id: i,
+									owner: res.owner,
+									title: res.title,
+									desc: res.description,
+									goal: res.goalAmount / Math.pow(10, 18),
+									gathered: res.gatheredAmount / Math.pow(10, 18),
+									claimed: res.fundsClaimed,
+									status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
+								}, ...this.state.projects]
 						});
 					}
 				}
@@ -66,45 +66,45 @@ class MyProjects extends Component {
 
 		this.state.contract.getPastEvents('contribution', { fromBlock: 0, toBlock: 'latest' }).then((events) => {
 			for (let i = 0; i < events.length; i++) {
-				if(events[i].returnValues.by === this.state.account) {
-				this.setState({
-					contributions: [...this.state.contributions,
-					{
-						id: events[i].returnValues._pid,
-						projectTitle: events[i].returnValues._title,
-						amt: events[i].returnValues._amt / Math.pow(10, 18)
-					}]
-				});
-			}}
+				if (events[i].returnValues.by === this.state.account) {
+					this.setState({
+						contributions: [...this.state.contributions,
+						{
+							id: events[i].returnValues._pid,
+							projectTitle: events[i].returnValues._title,
+							amt: events[i].returnValues._amt / Math.pow(10, 18)
+						}]
+					});
+				}
+			}
 		});
 
-		this.setState({loading: false});
+		this.setState({ loading: false });
 	}
 
 	claimFund(id, claimed) {
-		if(claimed) {
+		if (claimed) {
 			this.showToast("Funds have been claimed already!", "error");
-		} else{
-		this.setState({loading: true});
-		this.state.contract.methods.claimFunds(id).send({ from: this.props.account }).then((res) => {
-			this.setState({loading: false});
-			this.showToast("Funds claimed successfully!", "success");
-		}).catch((err) => {
-			this.setState({loading: false});
-			this.showToast(err, "error");
-		});
-	}
+		} else {
+			this.setState({ loading: true });
+			this.state.contract.methods.claimFunds(id).send({ from: this.props.account }).then((res) => {
+				this.setState({ loading: false });
+				this.showToast("Funds claimed successfully!", "success");
+			}).catch((err) => {
+				this.setState({ loading: false });
+				this.showToast("Something went wrong!", "error");
+			});
+		}
 	}
 
 	getRefund(id) {
-		this.setState({loading: true});
-		this.state.contract.methods.getRefund(id).send({ from: this.props.account, gas:200000 }).then((res) => {
-			this.setState({loading: false});
+		this.setState({ loading: true });
+		this.state.contract.methods.getRefund(id).send({ from: this.props.account, gas: 200000 }).then((res) => {
+			this.setState({ loading: false });
 			this.showToast("Refund received successfully!", "success");
 		}).catch((err) => {
-			this.setState({loading: false});
-			this.showToast(err, "error");
-			console.log(err);
+			this.setState({ loading: false });
+			this.showToast("Refund has been claimed already OR You have not contributed to this project", "error");
 		});
 	}
 
@@ -124,7 +124,7 @@ class MyProjects extends Component {
 	}
 
 	render() {
-		if(this.state.loading) {
+		if (this.state.loading) {
 			return (<Loading></Loading>);
 		}
 		return (
@@ -134,9 +134,12 @@ class MyProjects extends Component {
 					<div style={{ display: "flex", flexWrap: "wrap" }}>
 						{
 							this.state.projects.map((project, index) => {
+								let width = project.gathered * 100 / project.goal;
+								let perc = width.toString() + "%";
+
 								return (
 									<div className="project-tile">
-										<div style={{ margin: "20px", padding: "15px", backgroundColor:"white", borderRadius:"10px" }} className="rounded-lg">
+										<div style={{ margin: "20px", padding: "15px", backgroundColor: "white", borderRadius: "10px" }} className="rounded-lg">
 											<p style={{ fontSize: "20px" }}><b>{project.title}</b> <span className={project.status} >{project.status}</span></p>
 											<p className="text-muted">{project.desc}</p>
 											<div className="bg-light" style={{ margin: "5px", display: "flex" }}>
@@ -149,6 +152,10 @@ class MyProjects extends Component {
 													<p style={{ margin: "5px" }}><b>{project.gathered}</b> ETH</p>
 												</div>
 											</div>
+											<div style={{ margin: "2px", width: "100%", backgroundColor: "#d0d0d0" }}>
+												<div style={{ width: perc, height: "10px", backgroundColor: "#786694" }}></div>
+											</div>
+
 											<div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
 												{
 													project.status === "Successful" ?

@@ -9,7 +9,7 @@ class Projects extends Component {
 		super(props);
 		var web3 = new Web3(window.ethereum);
 		var contract = new web3.eth.Contract(ABI, ADDRESS);
-		this.state = { loading:false, projectCount: 0, projects: [], account: '', time: 0, web3: web3, contract: contract, index: 0, value: 0 };
+		this.state = { loading: false, projectCount: 0, projects: [], account: '', time: 0, web3: web3, contract: contract, index: 0, value: 0 };
 	}
 
 	componentWillMount() {
@@ -27,7 +27,7 @@ class Projects extends Component {
 	}
 
 	async getProjects() {
-		this.setState({loading: true});
+		this.setState({ loading: true });
 		var seconds = new Date().getTime() / 1000;
 		this.setState({ time: seconds });
 
@@ -48,24 +48,24 @@ class Projects extends Component {
 					console.log(res);
 					this.setState({
 						projects: [
-						{
-							id: i,
-							owner: res.owner,
-							title: res.title,
-							desc: res.description,
-							goal: res.goalAmount / Math.pow(10, 18),
-							gathered: res.gatheredAmount / Math.pow(10, 18),
-							status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
-						}, ...this.state.projects]
+							{
+								id: i,
+								owner: res.owner,
+								title: res.title,
+								desc: res.description,
+								goal: res.goalAmount / Math.pow(10, 18),
+								gathered: res.gatheredAmount / Math.pow(10, 18),
+								status: this.findStatus(this.state.web3.utils.fromWei(res.goalAmount, "ether"), this.state.web3.utils.fromWei(res.gatheredAmount, "ether"), res.deadline)
+							}, ...this.state.projects]
 					});
 				}
 			});
 		}
-		this.setState({loading:false});
+		this.setState({ loading: false });
 	}
 
 	contribute(id, index) {
-		this.setState({loading:true});
+		this.setState({ loading: true });
 		if (this.state.index === id && this.state.value > 0) {
 			this.state.contract.methods.contribute(id, this.state.web3.utils.toWei(this.state.value, "ether")).send({ from: this.props.account, value: this.state.web3.utils.toWei(this.state.value, "ether") })
 				.then((res) => {
@@ -74,10 +74,10 @@ class Projects extends Component {
 					project.gathered = parseFloat(project.gathered) + parseFloat(this.state.value);
 					projects[index] = project;
 					this.setState({ projects });
-					this.setState({loading:false});
+					this.setState({ loading: false });
 					this.showToast("You have successfully contributed for the project!", "success");
 				}).catch((err) => {
-					this.setState({loading:false});
+					this.setState({ loading: false });
 					this.showToast(err, "error");
 				});
 		}
@@ -110,19 +110,22 @@ class Projects extends Component {
 	}
 
 	render() {
-		if(this.state.loading) {
+		if (this.state.loading) {
 			return (<Loading></Loading>);
 		}
 		return (
 
 			<div className="container">
-
+				<div className="col-md-10 offset-md-1 mt-3"><b style={{ fontSize: "30px", marginLeft: "22px" }}>Projects</b></div>
 				<div className="col-md-10 offset-md-1" style={{ display: "flex", flexWrap: "wrap" }}>
 					{
 						this.state.projects.map((project, index) => {
+							let width = project.gathered * 100 / project.goal;
+							let perc = width.toString() + "%";
+
 							return (
 								<div className="project-tile">
-									<div style={{ margin: "20px", padding: "15px", backgroundColor: "white", borderRadius:"10px" }} className="rounded-lg shadow-sm">
+									<div style={{ margin: "20px", padding: "15px", backgroundColor: "white", borderRadius: "10px" }} className="rounded-lg shadow-sm">
 										<p style={{ fontSize: "20px" }}><b>{project.title}</b> <span className={project.status} >{project.status}</span></p>
 										<p className="text-muted">{project.desc}</p>
 										<div className="bg-light" style={{ margin: "2px", display: "flex" }}>
@@ -134,6 +137,9 @@ class Projects extends Component {
 												<p style={{ margin: "5px" }}>Gathered</p>
 												<p style={{ margin: "5px" }}><b>{project.gathered}</b> ETH</p>
 											</div>
+										</div>
+										<div style={{ margin: "2px", width: "100%", backgroundColor: "#d0d0d0" }}>
+											<div style={{ width: perc, height: "10px", backgroundColor: "#786694" }}></div>
 										</div>
 										<div style={{ display: "flex", justifyContent: "flex-start", margin: "20px" }}>
 											<div >

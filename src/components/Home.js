@@ -15,9 +15,9 @@ class Home extends Component {
 							<Link to='/start-project' style={{ textDecoration: "none", color: "gray", fontSize: "20px" }}><span style={{ fontSize: "25px" }}>+</span> Start a project</Link>
 						</div>
 						<div style={{ marginTop: "50px" }}>
-							<small>
+							<p>
 								<Link to="all-projects" style={{ textDecoration: "none" }}>Want to contribute?</Link>
-							</small>
+							</p>
 						</div>
 					</div>
 

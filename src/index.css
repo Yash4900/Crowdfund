@@ -178,3 +178,5 @@ button:disabled {
   from {top: 60px; opacity: 1;}
   to {top: 0; opacity: 0;}
 }
+
+progress::-webkit-progress-value { background: #786694; }

@@ -13,15 +13,15 @@ class StartProject extends Component {
 	}
 
 	async createNewProject(title, desc, mins, goal) {
-		this.setState({loading: true});
+		this.setState({ loading: true });
 		const web3 = new Web3(window.ethereum);
 		const contract = new web3.eth.Contract(ABI, ADDRESS);
 		contract.methods.createProject(title, desc, mins, web3.utils.toWei(goal, "ether")).send({ from: this.props.account, gas: 300000 })
 			.then((res) => {
-				this.setState({loading: false});
+				this.setState({ loading: false });
 				this.showToast("Project created successfully!", "success");
 			}).catch((err) => {
-				this.setState({loading: false});
+				this.setState({ loading: false });
 				this.showToast("Something went wrong", "error");
 				alert(err);
 			});
@@ -48,7 +48,7 @@ class StartProject extends Component {
 	}
 
 	render() {
-		if(this.state.loading) {
+		if (this.state.loading) {
 			return (<Loading></Loading>);
 		}
 		return (
@@ -56,7 +56,7 @@ class StartProject extends Component {
 				<div className="row">
 					<div className="col-md-6">
 						<p style={{ fontSize: "50px", lineHeight: "1" }}><b>Start a new fundraiser project</b></p>
-						<div className="px-2" style={{ backgroundColor:"white", marginTop: "40px", paddingTop: "40px", paddingBottom: "30px", borderRadius:"10px" }}>
+						<div className="px-2" style={{ backgroundColor: "white", marginTop: "40px", paddingTop: "40px", paddingBottom: "30px", borderRadius: "10px" }}>
 							<form onSubmit={this.handleSubmit}>
 								<div className="form-group row my-2 mx-3">
 									<label for="title" className="col-md-2 col-form-label">Title</label>
@@ -84,7 +84,7 @@ class StartProject extends Component {
 									</div>
 								</div>
 								<div className="text-muted mx-4 mt-2"><small>NOTE: Some gas fee will be charged for creating a project</small></div>
-								<div className="d-flex justify-content-center py-3" style={{marginTop: "30px"}}>
+								<div className="d-flex justify-content-center py-3" style={{ marginTop: "30px" }}>
 									<button disabled={this.state.loading} type="submit" className="btn btn-dark">CREATE</button>
 								</div>
 							</form>
