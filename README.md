@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+### About Crowdfund
+You might have come across a situation wherein you had a brilliant idea, maybe about organizing an event or building a unique product, but couldn't bring it to reality due to lack of funds. This is where Crowdfund comes in. Crowdfund is a decentralized crowdfunding platform built on Ethereum smart contracts.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Functionalities
+1. Start Project - You can start a fundraiser project by specifying details such as project title, description, goal amount (in Ethers) and deadline (in days).
+2. Fund Project - You can fund for projects which are Active with Ethers
+3. Claim Funds - You can claim all the ethers gathered by your project if it met the goal amount
+4. Get Refund - All funders can retrieve their contributions back if the project did not meet its goal  
 
-## Available Scripts
+### Dependencies
+Yow will need to install Metamask Chrome Extension and generate a wallet in order to access the web app
 
-In the project directory, you can run:
+### Tools
 
-### `npm start`
+#### Smart Contract
+<span>
+  <img src="https://camo.githubusercontent.com/8d9b697fab37b4c8fa992161ebbd39ad46529bf033bfd3bd021fd4afe3c19e32/68747470733a2f2f656e2e626974636f696e77696b692e6f72672f75706c6f61642f656e2f696d616765732f7468756d622f642f64352f536f6c69646974792e706e672f34303070782d536f6c69646974792e706e67" height="40px" /></span>
+<span>&nbsp;&nbsp;<img src="http://trufflesuite.com/img/ganache-logo-h-dark.svg" height="40px" /></span>
+&nbsp;&nbsp;<span><img src="https://i0.wp.com/kindalame.com/wp-content/uploads/2021/05/metamask-fox-wordmark-horizontal.png?resize=1280%2C480&ssl=1" height="40px" /></span>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### Frontend
+<span>
+<img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21.svg" height="40px" />
+</span>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### Editor
+<span>
+<img src="https://www.vectorlogo.zone/logos/visualstudio_code/visualstudio_code-ar21.svg" height="60px" />
+</span>
 
-### `npm test`
+### Snapshots
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<img src="https://github.com/Yash4900/Crowdfund/blob/main/screenshots/c1.PNG" />
 
-### `npm run build`
+<img src="https://github.com/Yash4900/Crowdfund/blob/main/screenshots/c2.PNG" />
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<img src="https://github.com/Yash4900/Crowdfund/blob/main/screenshots/c3.PNG" />
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<img src="https://github.com/Yash4900/Crowdfund/blob/main/screenshots/c4.PNG" />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img src="https://github.com/Yash4900/Crowdfund/blob/main/screenshots/c5.PNG" />
