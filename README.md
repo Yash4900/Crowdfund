@@ -1,3 +1,5 @@
+<div align="center"><img style="display:block; margin-left:auto; margin-right:auto;" src="https://github.com/Yash4900/Crowdfund/blob/main/screenshots/logo.png" /></div>
+
 ### About Crowdfund
 You might have come across a situation wherein you had a brilliant idea, maybe about organizing an event or building a unique product, but couldn't bring it to reality due to lack of funds. This is where Crowdfund comes in. Crowdfund is a decentralized crowdfunding platform built on Ethereum smart contracts.
 
