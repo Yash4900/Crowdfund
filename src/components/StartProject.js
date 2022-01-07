@@ -8,23 +8,44 @@ class StartProject extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { title: '', desc: '', mins: 0, goal: 0, loading: false };
+		this.state = { title: '', desc: '', mins: 0, goal: 0, loading: false, titleError: '', descError: '', minsError: '', goalError: '' };
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	async createNewProject(title, desc, mins, goal) {
-		this.setState({ loading: true });
-		const web3 = new Web3(window.ethereum);
-		const contract = new web3.eth.Contract(ABI, ADDRESS);
-		contract.methods.createProject(title, desc, mins, web3.utils.toWei(goal, "ether")).send({ from: this.props.account, gas: 300000 })
-			.then((res) => {
-				this.setState({ loading: false });
-				this.showToast("Project created successfully!", "success");
-			}).catch((err) => {
-				this.setState({ loading: false });
-				this.showToast("Something went wrong", "error");
-				alert(err);
-			});
+		var isValid = true;
+		if (this.state.title == '') {
+			this.setState({ titleError: 'Please enter your project title' });
+			isValid = false;
+		}
+		if (this.state.desc == '') {
+			this.setState({ descError: 'Please enter your project description' });
+			isValid = false;
+		}
+		if (this.state.mins == 0) {
+			this.setState({ minsError: 'Please enter project duration' });
+			isValid = false;
+		}
+		if (this.state.goal == 0) {
+			this.setState({ goalError: 'Please enter project goal amount' });
+			isValid = false;
+		}
+		if (isValid) {
+
+
+			this.setState({ loading: true });
+			const web3 = new Web3(window.ethereum);
+			const contract = new web3.eth.Contract(ABI, ADDRESS);
+			contract.methods.createProject(title, desc, mins, web3.utils.toWei(goal, "ether")).send({ from: this.props.account, gas: 300000 })
+				.then((res) => {
+					this.setState({ loading: false });
+					this.showToast("Project created successfully!", "success");
+				}).catch((err) => {
+					this.setState({ loading: false });
+					this.showToast("Something went wrong", "error");
+					alert(err);
+				});
+		}
 	}
 
 	handleSubmit(e) {
@@ -61,25 +82,39 @@ class StartProject extends Component {
 								<div className="form-group row my-2 mx-3">
 									<label for="title" className="col-md-2 col-form-label">Title</label>
 									<div className="col-md-10">
-										<input type="text" onChange={(e) => this.setState({ title: e.target.value })} className="form-control" id="title" placeholder="Enter project title" />
+										<input type="text" onChange={(e) => this.setState({ title: e.target.value, titleError: '' })} className="form-control" id="title" placeholder="Enter project title" />
+										<small className="text-danger">
+											{this.state.titleError}
+										</small>
 									</div>
 								</div>
 								<div className="form-group row my-2 mx-3">
 									<label className="col-md-2" for="description">Description</label>
 									<div className="col-md-10">
-										<textarea class="form-control" onChange={(e) => this.setState({ desc: e.target.value })} id="description" rows="3" placeholder="Enter project description"></textarea></div>
+										<textarea class="form-control" onChange={(e) => this.setState({ desc: e.target.value, descError: '' })} id="description" rows="3" placeholder="Enter project description"></textarea>
+										<small className="text-danger">
+											{this.state.descError}
+										</small>
+									</div>
+
 								</div>
 								<div className="form-group row mx-auto" style={{ marginTop: "40px" }}>
 									<div className="col-md-6 row" style={{ margin: "0px" }}>
 										<label for="goal" className="col-md-3 col-form-label">Goal</label>
 										<div className="col-md-9" style={{ margin: "0px" }}>
-											<input type="number" step="0.1" className="form-control" onChange={(e) => this.setState({ goal: e.target.value })} id="goal" placeholder="Goal amount" />
+											<input type="number" step="0.1" className="form-control" onChange={(e) => this.setState({ goal: e.target.value, goalError: '' })} id="goal" placeholder="Goal amount" />
+											<small className="text-danger">
+												{this.state.goalError}
+											</small>
 										</div>
 									</div>
 									<div className="col-md-6 row">
 										<label for="deadline" className="col-md-3 col-form-label">Deadline</label>
 										<div className="col-md-9">
-											<input type="number" className="form-control" onChange={(e) => this.setState({ mins: e.target.value })} id="deadline" placeholder="Project deadline" />
+											<input type="number" className="form-control" onChange={(e) => this.setState({ mins: e.target.value, minsError: '' })} id="deadline" placeholder="Project deadline" />
+											<small className="text-danger">
+												{this.state.minsError}
+											</small>
 										</div>
 									</div>
 								</div>
